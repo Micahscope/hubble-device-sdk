@@ -47,7 +47,7 @@ for your OS. Use the following command to export any necessary temporary environ
 Install Python dependencies for the *dual-stack-companion.py* provisioning script:
 
 ```sh
-pip install -r ../../../../tools/requirements-companion.txt
+pip install -r ../../../tools/requirements-companion.txt
 ```
 
 ### Windows
@@ -104,16 +104,19 @@ idf.py build flash monitor
 
 ### 3. Provision the Device
 
-On first boot, the device starts a connectable BLE advertisement named **"Hubble-ESP"**
-and waits for provisioning data. Use *dual-stack-companion.py* to push the current Unix Epoch time,
-device location, and orbital parameters data for the target satellites:
+On boot, the device starts a connectable BLE advertisement named **"Hubble-ESP"**
+and waits for provisioning data. Use `dual-stack-companion.py` to push the current Unix Epoch time,
+device location, and orbital parameters for the target satellites.
+
+See [companion tool documentation](https://github.com/HubbleNetwork/hubble-device-sdk/blob/main/docs/satellite/companion-tool.rst)
+for more information and instruction.
 
 ### Windows
 
 ```ps1
 $env:HUBBLE_API_TOKEN = "<your-hubble-api-token>"
 
-python ../../../../tools/dual-stack-companion.py
+python ../../../tools/dual-stack-companion.py
 ```
 
 ### Linux & macOS
@@ -121,18 +124,13 @@ python ../../../../tools/dual-stack-companion.py
 ```sh
 export HUBBLE_API_TOKEN=<your-hubble-api-token>
 
-python ../../../../tools/dual-stack-companion.py
+python ../../../tools/dual-stack-companion.py
 ```
 
-By default the device location is determined via IP geolocation. To provision an
-explicit location, pass the latitude and longitude (in degrees) with `--location`:
+> [!NOTE]
+> The device keeps the time, location and orbital parameters in RAM. It does not persist.
+> Run the provisioning script again after every power cycle or reset.
 
-```sh
-python ../../../../tools/dual-stack-companion.py --location <lat> <lon>
-```
-
-Once provisioning completes, the device automatically transitions into its
-satellite-pass scheduling loop and starts advertising the Hubble beacon.
 
 ## Program Flow
 

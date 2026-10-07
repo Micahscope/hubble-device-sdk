@@ -136,25 +136,33 @@ device using your preferred flashing tool (UniFlash, CCS, JLink, etc.).
 
 ### 5. Provision the Device
 
-On first boot, the device starts a connectable BLE advertisement named **"Hubble-TI"**
-and waits for provisioning data. Use *dual-stack-companion.py* to push the current UTC time, the
-device location, and the ephemeris data for the target satellites:
+On boot, the device starts a connectable BLE advertisement named **"Hubble-TI"**
+and waits for provisioning data. Use `dual-stack-companion.py` to push the current UTC time,
+device location, and orbital parameters for the target satellites.
 
-```bash
+See [companion tool documentation](https://github.com/HubbleNetwork/hubble-device-sdk/blob/main/docs/satellite/companion-tool.rst)
+for more information and instruction.
+
+### Windows
+
+```ps1
+$env:HUBBLE_API_TOKEN = "<your-hubble-api-token>"
+
+python ../../../../tools/dual-stack-companion.py
+```
+
+### Linux & macOS
+
+```sh
 export HUBBLE_API_TOKEN=<your-hubble-api-token>
 
 python ../../../../tools/dual-stack-companion.py
 ```
 
-By default the device location is determined via IP geolocation. To provision an
-explicit location, pass the latitude and longitude (in degrees) with `--location`:
+> [!NOTE]
+> The device keeps the time, location and orbital parameters in RAM. It does not persist.
+> Run the provisioning script again after every power cycle or reset.
 
-```bash
-python ../../../../tools/dual-stack-companion.py --location <lat> <lon>
-```
-
-Once provisioning completes, the device automatically transitions into its
-satellite-pass scheduling loop and starts advertising the Hubble beacon.
 
 ### 6. View Log
 
